@@ -3,7 +3,8 @@ recObj = audiorecorder(Fs, nBits, nChannels);
 
 disp('Start speaking...');
 record(recObj);
-pause;             click any key to stop
+% click any key to stop
+pause;             
 stop(recObj);
 disp('Recording stopped.');
 
