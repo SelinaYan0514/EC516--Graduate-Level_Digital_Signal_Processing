@@ -10,6 +10,7 @@ Fs = 16000;       % Sampling frequency
 nBits = 16;       % Bit depth
 nChannels = 1;    % Mono
 
+% Create an audioplayer object 
 recObj = audiorecorder(Fs, nBits, nChannels);
 
 disp('Start speaking: "Six students went to school"');
@@ -17,13 +18,13 @@ record(recObj);       % Start recording
 pause;                % Press any key to stop recording
 stop(recObj);         % Stop recording
 
-% Get audio data from recorder
+% Get the recorded data
 audioData = getaudiodata(recObj);
 
 % Save audio data into a WAV file
 audiowrite('audio.wav', audioData, Fs);
 
-% Reload audio file for processing
+% Read the audio and sampling rate
 [x, F] = audioread('audio.wav');
 
 figure;
@@ -33,9 +34,9 @@ xlabel('Sample Index'); ylabel('Amplitude');
 
 
 % ----------------- B. Digital Upsampling -----------------
-U = 4;   % Upsampling factor
+U = 4;   % Fake upsampling factor
 
-% Perform zero-insertion upsampling
+% Perform fake/zero-insertion upsampling
 isr_x = upsample(x, U);
 
 % Plot: Original vs IncreasedSR
@@ -43,11 +44,11 @@ figure;
 subplot(2,1,1); plot(x); title('Original');
 subplot(2,1,2); plot(isr_x); title('IncreasedSR (zero-inserted)');
 
-% Load interpolation filter
+% Load the given non-ideal interpolation filter
 load('filter1.mat','b');  
-upsampled_x = filter(b, 1, isr_x);
+upsampled_x = filter(b, 1, isr_x); % Pass the IncreasedSR signal through the loaded filter
 
-% Plot: Interpolated Upsampled signal
+% Plot: True/Interpolated Upsampled signal
 figure;
 plot(upsampled_x);
 title('Upsampled (Interpolated)');
